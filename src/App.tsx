@@ -1,7 +1,13 @@
 import React from 'react';
+import { NewRoom } from './pages/NweRoom';
+// import { Home } from './pages/Home';
 
 function App() {
-  return <h1>Ola Mundo</h1>;
+  return (
+    <>
+      <NewRoom />
+    </>
+  );
 }
 
 export default App;
