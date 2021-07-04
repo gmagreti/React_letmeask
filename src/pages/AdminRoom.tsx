@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import logoImg from '../assets/images/logo.svg';
@@ -8,6 +9,7 @@ import answerImg from '../assets/images/answer.svg';
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
+import { ModalConfirm } from '../components/ModalConfirm';
 
 import { useRoom } from '../hooks/useRoom';
 import { database } from '../services/firebase';
@@ -19,7 +21,7 @@ type RoomParams = {
 };
 
 export function AdminRoom() {
-  // const { user } = useAuth();
+  const [isConfirmCloseModalOpen, setIsConfirmCloseModalOpen] = useState(false);
   const history = useHistory();
   const params = useParams<RoomParams>();
   const roomId = params.id;
@@ -35,9 +37,7 @@ export function AdminRoom() {
   }
 
   async function handleDeleteQuestion(questionId: string) {
-    if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
-      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
-    }
+    setIsConfirmCloseModalOpen(true);
   }
 
   async function handleCheckQuestionAsAnswered(questionId: string) {
@@ -50,6 +50,10 @@ export function AdminRoom() {
     await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
       isHighlighted: true,
     });
+  }
+
+  function handleCloseModal() {
+    setIsConfirmCloseModalOpen(false);
   }
 
   return (
@@ -112,6 +116,11 @@ export function AdminRoom() {
           })}
         </div>
       </main>
+
+      <ModalConfirm
+        isOpen={isConfirmCloseModalOpen}
+        onRequestClose={handleCloseModal}
+      />
     </div>
   );
 }

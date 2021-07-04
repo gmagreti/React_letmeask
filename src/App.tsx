@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { Home } from './pages/Home';
@@ -8,6 +9,16 @@ import { AuthContextProvider } from './contexts/AuthContext';
 import { AdminRoom } from './pages/AdminRoom';
 
 function App() {
+  const [isConfirmCloseModalOpen, setIsConfirmCloseModalOpen] = useState(false);
+
+  function handleOpenModal() {
+    setIsConfirmCloseModalOpen(false);
+  }
+
+  function handleCloseModal() {
+    setIsConfirmCloseModalOpen(false);
+  }
+
   return (
     <BrowserRouter>
       <AuthContextProvider>
